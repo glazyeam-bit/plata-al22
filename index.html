@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Pago a AL2</title>
+    <title>Pago con Mercado Pago</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <style>
         * { box-sizing: border-box; }
         body {
@@ -26,9 +27,21 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             border: 1px solid rgba(148,163,184,0.3);
         }
-        .title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
-        .subtitle { font-size: 13px; color: #9ca3af; margin-bottom: 18px; }
-        .amount { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-bottom: 18px;
+        }
+        .amount {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
         .label {
             font-size: 11px;
             text-transform: uppercase;
@@ -36,7 +49,11 @@
             color: #9ca3af;
             margin-bottom: 4px;
         }
-        .value { font-size: 14px; margin-bottom: 12px; word-break: break-all; }
+        .value {
+            font-size: 14px;
+            margin-bottom: 12px;
+            word-break: break-all;
+        }
         .box {
             padding: 10px 12px;
             border-radius: 10px;
@@ -44,7 +61,11 @@
             border: 1px solid rgba(148,163,184,0.3);
             margin-bottom: 14px;
         }
-        .hint { font-size: 12px; color: #9ca3af; margin-bottom: 18px; }
+        .hint {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 18px;
+        }
         button {
             width: 100%;
             border: none;
@@ -56,52 +77,56 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
             background: #00b0ff;
             color: #020617;
         }
         button:active { transform: translateY(1px); }
-        .status { margin-top: 10px; font-size: 12px; color: #9ca3af; min-height: 16px; }
+        .status {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #9ca3af;
+            min-height: 16px;
+        }
     </style>
 </head>
 <body>
-<div class="title">Pago con Mercado Pago</div>
-<div class="subtitle">Transferencia a una cuenta en el banco AL2</div>
+<div class="card">
+    <div class="title">Pago con Mercado Pago</div>
+    <div class="subtitle">Transferencia a una cuenta en el banco AL2</div>
 
-<div class="amount" id="amount-text">5000 ARS</div>
+    <div class="amount" id="amount-text">5000 ARS</div>
 
-<div class="box">
-    <div class="label">Titular</div>
-    <div class="value" id="recipient-text">Axel Marcelo Josué</div>
+    <div class="box">
+        <div class="label">Titular</div>
+        <div class="value" id="recipient-text">Axel Marcelo Josué</div>
 
-    <div class="label">Banco</div>
-    <div class="value">AL2</div>
+        <div class="label">Banco</div>
+        <div class="value">AL2</div>
 
-    <div class="label">CVU</div>
-    <div class="value" id="cvu-text">0000171300000000225636</div>
-</div>
+        <div class="label">CVU</div>
+        <div class="value" id="cvu-text">0000171300000000225636</div>
+    </div>
 
-<div class="hint">
-    Al presionar, los datos de pago se copiarán al portapapeles y se abrirá Mercado Pago.
-</div>
+    <div class="hint">
+        Al presionar, los datos de pago se copiarán al portapapeles y se abrirá Mercado Pago.
+    </div>
 
-<button id="pay-btn">
-    <span>Pagar con Mercado Pago</span>
-</button>
+    <button id="pay-btn">Pagar con Mercado Pago</button>
 
     <div class="status" id="status"></div>
 </div>
 
 <script>
+    // 👉 тут меняешь только эти три значения под себя
     const CVU = '0000171300000000225636';
-    const AMOUNT = '5000 ARS';
+    const AMOUNT = '1000 ARS';
     const RECIPIENT = 'Axel Marcelo Josué';
 
-    const TEXT_FOR_CLIPBOARD =
-`CVU: ${CVU}
-Titular: ${RECIPIENT}
-Banco: AL2
-Monto: ${AMOUNT}`;
+    // что именно копируем в буфер
+    const TEXT_FOR_CLIPBOARD = `CVU: ${CVU}\nTitular: ${RECIPIENT}\nBanco: AL2\nMonto: ${AMOUNT}`; // только CVU
+    // если хочешь красивый текст — можешь сделать так:
+    // const TEXT_FOR_CLIPBOARD =
+    // `CVU: ${CVU}\nTitular: ${RECIPIENT}\nBanco: AL2\nMonto: ${AMOUNT}`;
 
     document.getElementById('amount-text').textContent = AMOUNT;
     document.getElementById('recipient-text').textContent = RECIPIENT;
@@ -110,23 +135,21 @@ Monto: ${AMOUNT}`;
     const statusEl = document.getElementById('status');
     const btn = document.getElementById('pay-btn');
 
-btn.addEventListener('click', async () => {
-    // 1. копируем реквизиты
-    try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            await navigator.clipboard.writeText(TEXT_FOR_CLIPBOARD);
-            statusEl.textContent = 'Datos copiados al portapapeles.';
-        } else {
-            statusEl.textContent = 'No se pudo acceder al portapapeles, copiá los datos manualmente.';
+    btn.addEventListener('click', async () => {
+        // 1. копируем реквизиты
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(TEXT_FOR_CLIPBOARD);
+                statusEl.textContent = 'Datos copiados al portapapeles.';
+            } else {
+                statusEl.textContent = 'No se pudo acceder al portapapeles, copiá los datos manualmente.';
+            }
+        } catch (e) {
+            statusEl.textContent = 'No se pudo copiar, copiá los datos manualmente.';
         }
-    } catch (e) {
-        statusEl.textContent = 'No se pudo copiar, copiá los datos manualmente.';
-    }
 
-    // 2. пытаемся открыть app Mercado Pago
-    // схема, как говорил твой друг
-    window.location.href = 'mercadopago://withdraw';
-});
+        // 2. пробуем открыть приложение Mercado Pago
+        window.location.href = 'mercadopago://withdraw';
     });
 </script>
 </body>
