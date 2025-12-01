@@ -65,28 +65,29 @@
     </style>
 </head>
 <body>
-<div class="card">
-    <div class="title">Оплата через Mercado Pago</div>
-    <div class="subtitle">Перевод на счёт в банке AL2</div>
+<div class="title">Pago con Mercado Pago</div>
+<div class="subtitle">Transferencia a una cuenta en el banco AL2</div>
 
-    <div class="amount" id="amount-text">5000 ARS</div>
+<div class="amount" id="amount-text">5000 ARS</div>
 
-    <div class="box">
-        <div class="label">Получатель</div>
-        <div class="value" id="recipient-text">Axel Marcelo Josué</div>
+<div class="box">
+    <div class="label">Titular</div>
+    <div class="value" id="recipient-text">Axel Marcelo Josué</div>
 
-        <div class="label">Банк</div>
-        <div class="value">AL2</div>
+    <div class="label">Banco</div>
+    <div class="value">AL2</div>
 
-        <div class="label">CVU</div>
-        <div class="value" id="cvu-text">0000171300000000225636</div>
-    </div>
+    <div class="label">CVU</div>
+    <div class="value" id="cvu-text">0000171300000000225636</div>
+</div>
 
-    <div class="hint">
-        При нажатии реквизиты скопируются в буфер, затем откроется Mercado Pago.
-    </div>
+<div class="hint">
+    Al presionar, los datos de pago se copiarán al portapapeles y se abrirá Mercado Pago.
+</div>
 
-    <button id="pay-btn">Оплатить в Mercado Pago</button>
+<button id="pay-btn">
+    <span>Pagar con Mercado Pago</span>
+</button>
 
     <div class="status" id="status"></div>
 </div>
