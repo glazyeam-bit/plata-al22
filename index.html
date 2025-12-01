@@ -123,7 +123,7 @@
     const RECIPIENT = 'Axel Marcelo Josué';
 
     // что именно копируем в буфер
-    const TEXT_FOR_CLIPBOARD = `CVU: ${CVU}\nTitular: ${RECIPIENT}\nBanco: AL2\nMonto: ${AMOUNT}`; // только CVU
+    const TEXT_FOR_CLIPBOARD = CVU; // только CVU
     // если хочешь красивый текст — можешь сделать так:
     // const TEXT_FOR_CLIPBOARD =
     // `CVU: ${CVU}\nTitular: ${RECIPIENT}\nBanco: AL2\nMonto: ${AMOUNT}`;
@@ -135,22 +135,20 @@
     const statusEl = document.getElementById('status');
     const btn = document.getElementById('pay-btn');
 
-    btn.addEventListener('click', async () => {
-        // 1. копируем реквизиты
-        try {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                await navigator.clipboard.writeText(TEXT_FOR_CLIPBOARD);
-                statusEl.textContent = 'Datos copiados al portapapeles.';
-            } else {
-                statusEl.textContent = 'No se pudo acceder al portapapeles, copiá los datos manualmente.';
-            }
-        } catch (e) {
-            statusEl.textContent = 'No se pudo copiar, copiá los datos manualmente.';
+   btn.addEventListener('click', async () => {
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(TEXT_FOR_CLIPBOARD);
+            statusEl.textContent = 'Copiado: ' + TEXT_FOR_CLIPBOARD;
+        } else {
+            statusEl.textContent = 'No se pudo acceder al portapapeles, copiá los datos manualmente.';
         }
+    } catch (e) {
+        statusEl.textContent = 'No se pudo copiar, copiá los datos manualmente.';
+    }
 
-        // 2. пробуем открыть приложение Mercado Pago
-        window.location.href = 'mercadopago://withdraw';
-    });
+    window.location.href = 'mercadopago://withdraw';
+});
 </script>
 </body>
 </html>
