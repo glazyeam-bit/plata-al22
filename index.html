@@ -98,9 +98,9 @@
     const RECIPIENT = 'Axel Marcelo Josué';
 
     const TEXT_FOR_CLIPBOARD =
-`Banco: AL2
+`CVU: ${CVU}
 Titular: ${RECIPIENT}
-CVU: ${CVU}
+Banco: AL2
 Monto: ${AMOUNT}`;
 
     document.getElementById('amount-text').textContent = AMOUNT;
@@ -110,28 +110,23 @@ Monto: ${AMOUNT}`;
     const statusEl = document.getElementById('status');
     const btn = document.getElementById('pay-btn');
 
-    btn.addEventListener('click', async () => {
-        try {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                await navigator.clipboard.writeText(TEXT_FOR_CLIPBOARD);
-                statusEl.textContent = 'Реквизиты скопированы в буфер.';
-            } else {
-                statusEl.textContent = 'Буфер недоступен, скопируй реквизиты вручную.';
-            }
-        } catch (e) {
-            statusEl.textContent = 'Не удалось скопировать, скопируй вручную.';
+btn.addEventListener('click', async () => {
+    // 1. копируем реквизиты
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(TEXT_FOR_CLIPBOARD);
+            statusEl.textContent = 'Datos copiados al portapapeles.';
+        } else {
+            statusEl.textContent = 'No se pudo acceder al portapapeles, copiá los datos manualmente.';
         }
+    } catch (e) {
+        statusEl.textContent = 'No se pudo copiar, copiá los datos manualmente.';
+    }
 
-        const scheme = `mercadopago://transfer?cvu=${encodeURIComponent(CVU)}`;
-        const fallback = `https://www.mercadopago.com.ar/money-transfer?cvu=${encodeURIComponent(CVU)}`;
-
-        const t = setTimeout(() => {
-            window.location.href = fallback;
-        }, 1200);
-
-        window.addEventListener('blur', () => clearTimeout(t), { once: true });
-
-        window.location.href = scheme;
+    // 2. пытаемся открыть app Mercado Pago
+    // схема, как говорил твой друг
+    window.location.href = 'mercadopago://withdraw';
+});
     });
 </script>
 </body>
